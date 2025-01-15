@@ -1,0 +1,17 @@
+services:
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb_container
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: todo_app
+      MYSQL_USER: my_user
+      MYSQL_PASSWORD: my_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql      # Andmete püsivaks salvestamiseks
+      - ./init-scripts:/docker-entrypoint-initdb.d # Algskriptide täitmine
+
+volumes:
+  mariadb_data:

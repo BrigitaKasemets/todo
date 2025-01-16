@@ -52,15 +52,15 @@ CREATE TABLE task_categories (
         ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 
--- Task_assignments table
-CREATE TABLE task_assignments (
-    assignment_id INT UNSIGNED AUTO_INCREMENT,
+-- Task_users table
+USE todo_app;
+CREATE TABLE task_users (
     task_id INT UNSIGNED,
     user_id INT UNSIGNED,
     assigned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'TIMESTAMP for automatic assignment tracking',
     due_date DATE COMMENT 'DATE type as only day precision needed',
     notes TEXT COMMENT 'TEXT for potentially long assignment notes',
-    PRIMARY KEY (assignment_id),
+    PRIMARY KEY (task_id, user_id),
     UNIQUE KEY unique_task_user (task_id, user_id),
     FOREIGN KEY (task_id)
         REFERENCES tasks(task_id)
@@ -103,7 +103,7 @@ INSERT INTO task_categories (task_id, category_id) VALUES
 (5, 1); -- Code review task in Development category
 
 -- Sample data for task_assignments
-INSERT INTO task_assignments (task_id, user_id, due_date, notes) VALUES
+INSERT INTO task_users (task_id, user_id, due_date, notes) VALUES
 (1, 1, '2024-01-20', 'Focus on API documentation first'),
 (2, 2, '2024-01-25', 'Use JWT for authentication'),
 (3, 3, '2024-01-18', 'Include indexing strategy'),

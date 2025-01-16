@@ -70,6 +70,7 @@ CREATE TABLE task_users (
         ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 
+
 -- Sample data for tasks
 INSERT INTO tasks (title, description, created_at, due_date, status, priority) VALUES
 ('Complete project documentation', 'Write comprehensive documentation for the TODO app', '2024-01-15 09:00:00', '2024-01-20', 'in_progress', 2),

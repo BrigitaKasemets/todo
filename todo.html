@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo Rakendus</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.3.4/vue.global.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        .todo-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin: 5px 0;
+            border-radius: 4px;
+        }
+        .todo-text {
+            flex: 1;
+            margin: 0 10px;
+        }
+        .completed {
+            text-decoration: line-through;
+            color: #888;
+        }
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .delete-btn {
+            background-color: #ff4444;
+        }
+        .delete-btn:hover {
+            background-color: #cc0000;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <h1>Todo List</h1>
+
+    <div class="input-group">
+        <input
+                type="text"
+                v-model="newTodo"
+                @keyup.enter="addTodo"
+                placeholder="Lisa uus ülesanne...">
+        <button @click="addTodo">Lisa</button>
+    </div>
+
+    <div v-for="todo in todos" :key="todo.id" class="todo-item">
+        <input
+                type="checkbox"
+                v-model="todo.completed">
+        <span
+                class="todo-text"
+                :class="{ completed: todo.completed }">
+                {{ todo.text }}
+            </span>
+        <button
+                @click="deleteTodo(todo.id)"
+                class="delete-btn">
+            Kustuta
+        </button>
+    </div>
+</div>
+
+<script>
+    // Võtame Vue objektist createApp funktsiooni, mida kasutame rakenduse loomiseks
+    const { createApp } = Vue;
+
+    // Loome uue Vue rakenduse, mis sisaldab kogu todo rakenduse loogikat
+    createApp({
+        // data() funktsioon määratleb rakenduse algseisu
+        data() {
+            return {
+                newTodo: '',  // Sisendvälja väärtus uue todo jaoks
+                todos: []     // Massiiv, mis hoiab kõiki todo elemente
+            }
+        },
+        // methods objekt sisaldab kõiki rakenduse funktsioone
+        methods: {
+            // addTodo() funktsioon lisab uue todo elementi nimekirja
+            addTodo() {
+                // Kontrollime, et todo tekst poleks tühi (eemaldame tühikud algusest ja lõpust)
+                if (this.newTodo.trim()) {
+                    // Lisame uue todo objekti massiivi
+                    this.todos.push({
+                        id: Date.now(),  // Loome unikaalse ID kasutades praegust ajatemplit
+                        text: this.newTodo,  // Todo tekst võetakse sisendväljast
+                        completed: false      // Alguses on todo märkimata
+                    });
+                    this.newTodo = '';  // Tühjendame sisendvälja pärast lisamist
+                }
+            },
+            // deleteTodo() funktsioon eemaldab todo elemendi nimekirjast
+            deleteTodo(id) {
+                // Filtreerime välja todo, mille ID vastab kustutatavale
+                this.todos = this.todos.filter(todo => todo.id !== id);
+            }
+        }
+        // Ühendame Vue rakenduse HTML-is oleva elemendiga, millel on id="app"
+    }).mount('#app');
+</script>
+</body>
+</html>
